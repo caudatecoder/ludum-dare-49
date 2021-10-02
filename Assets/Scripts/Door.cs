@@ -9,6 +9,7 @@ public class Door : MonoBehaviour
     public Animator animator;
     public BoxCollider2D colliderToDisable;
     public Light2D indicatorLight;
+    public AudioSource doorSound;
 
     private Color indicatorClosed = new Color(1, 0, 0);
     private Color indicatorOpened = new Color(0, 1, 0);
@@ -20,6 +21,7 @@ public class Door : MonoBehaviour
 
     public void Toggle()
     {
+        doorSound.Play();
         isOpen = !isOpen;
         Perform();
     }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class PlayerAbilities : MonoBehaviour
 {
@@ -8,8 +9,11 @@ public class PlayerAbilities : MonoBehaviour
     public bool CPREnabled = true;
     public GameObject currentInteractable;
     public Remote currentRemote;
+    public Light2D electricLight;
+    public AudioSource remoteSound;
 
     private MyDefaultControls Controls;
+    private bool expandElectricLight = false;
 
     public void SetInteractable(GameObject interactable)
     {
@@ -29,14 +33,41 @@ public class PlayerAbilities : MonoBehaviour
 
     void Use()
     {
-        if (currentInteractable != null)
-            currentInteractable.SendMessage("Interact", gameObject);
+        if (currentInteractable == null)
+            return;
+
+        currentInteractable.SendMessage("Interact", gameObject);
+
+        if (currentInteractable.GetComponent<Battery>())
+        {
+            expandElectricLight = true;
+            Invoke("StopExpandingLight", 0.5f);
+        }
     }
 
     void RemoteActivate()
     {
         if (currentRemote != null)
+        {
             currentRemote.Activate();
+            remoteSound.Play();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (expandElectricLight)
+        {
+            electricLight.intensity += Time.fixedDeltaTime * 10;
+        } else if (electricLight.intensity > 0)
+        {
+            electricLight.intensity -= Time.fixedDeltaTime * 10;
+        }
+    }
+
+    private void StopExpandingLight()
+    {
+        expandElectricLight = false;
     }
 
     private void OnEnable()

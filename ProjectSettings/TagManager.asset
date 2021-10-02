@@ -45,6 +45,9 @@ TagManager:
   - name: Midground
     uniqueID: 316878211
     locked: 0
+  - name: Environment
+    uniqueID: 850773641
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

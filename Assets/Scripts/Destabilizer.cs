@@ -12,7 +12,10 @@ public class Destabilizer : MonoBehaviour
     public Text dialogBox;
     public float systemFailureMinutes = 2;
     public PlayerLife player;
-    
+
+    public AudioSource backgroundMusicBefore;
+    public AudioSource backgroundMusicAfter;
+
     private bool isDone = false;
     private DateTime endTime;
 
@@ -43,6 +46,7 @@ public class Destabilizer : MonoBehaviour
     {
         player.GetComponent<PlayerMovement>().enabled = false;
         player.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+        backgroundMusicBefore.Stop();
 
         dialogBox.text = "[SYSTEM FAILURE] [MAIN_REACTOR_DESTRUCION_IMMINENT]";
 
@@ -55,6 +59,7 @@ public class Destabilizer : MonoBehaviour
         isDone = true;
         endTime = DateTime.Now.AddMinutes(systemFailureMinutes);
 
+        backgroundMusicAfter.Play();
         player.GetComponent<PlayerMovement>().enabled = true;
         player.SendMessage("Destabilize");
 

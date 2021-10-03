@@ -8,6 +8,7 @@ public class EnergyCenter : MonoBehaviour
     public Light2D indicatorLight;
     public AudioSource unstableSound;
     public AudioSource stableSound;
+    public AudioSource backgroundMusic;
     public Animator sceneTransitionAnimator;
 
     private bool isStable = false;
@@ -49,6 +50,7 @@ public class EnergyCenter : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
 
+        backgroundMusic.Stop();
         sceneTransitionAnimator.SetTrigger("Start");
 
         yield return new WaitForSeconds(.5f);

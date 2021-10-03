@@ -41,6 +41,14 @@ public class @MyDefaultControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""Button"",
+                    ""id"": ""7546ed43-770d-4407-9de3-83e0ef99f6df"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -131,6 +139,72 @@ public class @MyDefaultControls : IInputActionCollection, IDisposable
                     ""action"": ""Remote"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""LookWasd"",
+                    ""id"": ""3e888d32-d1c4-44f9-8b7a-e3c11cb11eee"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""eacf99c6-278b-4ae8-a4e2-bc60f3b5ceb0"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""1433c705-d413-4378-b81e-cafb80bd44b2"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""LookArrows"",
+                    ""id"": ""8f97660d-8779-440a-83f4-2d987e6e33cb"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""5ea45076-4742-4b6d-ba91-26fd5eb4fc79"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""431f2d8e-564d-4b1f-a5c3-7c592d72b648"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -170,6 +244,7 @@ public class @MyDefaultControls : IInputActionCollection, IDisposable
         m_Player_Use = m_Player.FindAction("Use", throwIfNotFound: true);
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_Remote = m_Player.FindAction("Remote", throwIfNotFound: true);
+        m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -222,6 +297,7 @@ public class @MyDefaultControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Use;
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_Remote;
+    private readonly InputAction m_Player_Look;
     public struct PlayerActions
     {
         private @MyDefaultControls m_Wrapper;
@@ -229,6 +305,7 @@ public class @MyDefaultControls : IInputActionCollection, IDisposable
         public InputAction @Use => m_Wrapper.m_Player_Use;
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @Remote => m_Wrapper.m_Player_Remote;
+        public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -247,6 +324,9 @@ public class @MyDefaultControls : IInputActionCollection, IDisposable
                 @Remote.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRemote;
                 @Remote.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRemote;
                 @Remote.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRemote;
+                @Look.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
+                @Look.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
+                @Look.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -260,6 +340,9 @@ public class @MyDefaultControls : IInputActionCollection, IDisposable
                 @Remote.started += instance.OnRemote;
                 @Remote.performed += instance.OnRemote;
                 @Remote.canceled += instance.OnRemote;
+                @Look.started += instance.OnLook;
+                @Look.performed += instance.OnLook;
+                @Look.canceled += instance.OnLook;
             }
         }
     }
@@ -287,5 +370,6 @@ public class @MyDefaultControls : IInputActionCollection, IDisposable
         void OnUse(InputAction.CallbackContext context);
         void OnMovement(InputAction.CallbackContext context);
         void OnRemote(InputAction.CallbackContext context);
+        void OnLook(InputAction.CallbackContext context);
     }
 }

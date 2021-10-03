@@ -43,7 +43,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: f063f900730e6734ea16e8aad3a2777b, type: 2}
   m_audioClip: {fileID: 8300000, guid: 911196011d3b4d44e9f2c3c0a2ab2492, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.3
+  m_Volume: 0.201
   m_Pitch: 2
   Loop: 1
   Mute: 0
@@ -649,6 +649,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 3779137275594077276}
   movementSound: {fileID: 304889521}
+  vCam: {fileID: 0}
 --- !u!114 &3779137275594077274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -667,12 +668,13 @@ MonoBehaviour:
   chargerUI: {fileID: 0}
   remoteUI: {fileID: 0}
   micUI: {fileID: 0}
-  destabilizationInterval: 30
+  destabilizationInterval: 20
   currentInteractable: {fileID: 0}
   currentRemote: {fileID: 0}
   electricLight: {fileID: 3779137275523460187}
   remoteSound: {fileID: 1946020026}
   destabilizedSound: {fileID: 1176821924}
+  dialogBox: {fileID: 0}
   micMixer: {fileID: 24100000, guid: f063f900730e6734ea16e8aad3a2777b, type: 2}
   systemMixer: {fileID: 24100000, guid: 374482d0fad8e4b46b677aa24a500223, type: 2}
 --- !u!114 &1471272342

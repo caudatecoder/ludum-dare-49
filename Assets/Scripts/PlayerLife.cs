@@ -9,11 +9,11 @@ public class PlayerLife : MonoBehaviour
     public Animator sceneTransitionAnimator;
     public float transitionDuration = .5f;
 
-    public void Die()
+    public void Die(bool forceRestart = false)
     {
         GetComponent<PlayerMovement>().enabled = false;
 
-        if (lastCheckpoint != null)
+        if (lastCheckpoint != null && !forceRestart)
         {
             transform.position = lastCheckpoint.transform.position;
             StartCoroutine(ReloadCheckpoint());

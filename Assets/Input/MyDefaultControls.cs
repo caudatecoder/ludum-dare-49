@@ -46,17 +46,6 @@ public class @MyDefaultControls : IInputActionCollection, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""c5c024ec-8a06-4692-aed4-130e89b13a8b"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard and Mouse"",
-                    ""action"": ""Use"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""5c9ca7c7-4a1e-4b13-9131-f5c0edb9dee9"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",

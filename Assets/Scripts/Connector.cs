@@ -56,7 +56,7 @@ public class Connector : MonoBehaviour
     {
         if (isActive && collision.gameObject.tag == "Player")
         {
-            collision.gameObject.SendMessage("Die");
+            collision.gameObject.SendMessage("Die", false);
         }
     }
 
@@ -64,7 +64,7 @@ public class Connector : MonoBehaviour
     {
         if (isActive && collision.gameObject.tag == "Player")
         {
-            collision.gameObject.SendMessage("Die");
+            collision.gameObject.SendMessage("Die", false);
         }
     }
 

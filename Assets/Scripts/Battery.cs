@@ -22,11 +22,12 @@ public class Battery : MonoBehaviour
         indicatorLight.color = indicatorOpened;
         chargeSound.Play();
 
-        Invoke("OpenDoor", 1f);
+        Invoke("UnlockDoor", 1f);
     }
 
-    private void OpenDoor()
+    private void UnlockDoor()
     {
+        door.canBeOpened = true;
         door.Toggle();
     }
 }

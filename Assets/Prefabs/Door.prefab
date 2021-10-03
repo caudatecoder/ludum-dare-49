@@ -40,7 +40,7 @@ AudioSource:
   m_GameObject: {fileID: 2113957551}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: f063f900730e6734ea16e8aad3a2777b, type: 2}
   m_audioClip: {fileID: 8300000, guid: 9038d7f853b498345b33521a95ae431b, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -318,6 +318,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpen: 0
+  canBeOpened: 1
   animator: {fileID: 8745423728525668887}
   colliderToDisable: {fileID: 8745423728525668872}
   indicatorLight: {fileID: 8745423728338304633}

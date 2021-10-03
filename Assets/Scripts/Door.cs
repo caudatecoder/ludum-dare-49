@@ -6,6 +6,7 @@ using UnityEngine.Experimental.Rendering.Universal;
 public class Door : MonoBehaviour
 {
     public bool isOpen = false;
+    public bool canBeOpened = true;
     public Animator animator;
     public BoxCollider2D colliderToDisable;
     public Light2D indicatorLight;
@@ -21,6 +22,9 @@ public class Door : MonoBehaviour
 
     public void Toggle()
     {
+        if (!canBeOpened)
+            return;
+
         doorSound.Play();
         isOpen = !isOpen;
         Perform();

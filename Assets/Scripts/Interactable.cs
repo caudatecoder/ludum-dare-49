@@ -7,6 +7,9 @@ public class Interactable : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             collision.gameObject.GetComponent<PlayerAbilities>().SetInteractable(gameObject);
+
+            gameObject.SendMessage("SetPlayerNear", true, SendMessageOptions.DontRequireReceiver);
+            gameObject.SendMessage("UpdateUI", null, SendMessageOptions.DontRequireReceiver);
         }
     }
 
@@ -15,6 +18,9 @@ public class Interactable : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             collision.gameObject.GetComponent<PlayerAbilities>().SetInteractable(null);
+
+            gameObject.SendMessage("SetPlayerNear", false, SendMessageOptions.DontRequireReceiver);
+            gameObject.SendMessage("UpdateUI", null, SendMessageOptions.DontRequireReceiver);
         }
     }
 }

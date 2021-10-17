@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class DialogPickup : MonoBehaviour
 {
     public string text;
-    public Text textUI;
+    public DialogCanvas dialogCanvas;
     public AudioSource notificationSound;
 
     private bool isDone = false;
@@ -14,7 +14,7 @@ public class DialogPickup : MonoBehaviour
         if (!isDone && collision.gameObject.tag == "Player")
         {
             isDone = true;
-            textUI.text = text;
+            dialogCanvas.ShowNewDialog(text);
             notificationSound.Play();
         }
     }

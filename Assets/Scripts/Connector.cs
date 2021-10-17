@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
+using UnityEngine.Audio;
 
 public class Connector : MonoBehaviour
 {
     public Light2D electicLight;
-    public AudioSource warningLong;
-    public AudioSource warningShort;
+    public AudioSource[] warningsLong;
+    public AudioSource[] warningsShort;
     public AudioSource electricSound;
     public Animator animator;
     public float timeBeforeActivation = 3f;
@@ -16,30 +17,41 @@ public class Connector : MonoBehaviour
     private void Start()
     {
         InvokeRepeating("FlickLight", timeBeforeActivation, 0.12f);
-        warningLong.Play();
-        warningShort.Play();
+
+        foreach (AudioSource wl in warningsLong)
+        {
+            wl.Play();
+        }
+
+        foreach (AudioSource ws in warningsShort)
+        {
+            ws.Play();
+        }
     }
 
     private void FixedUpdate()
     {
         if (timeBeforeActivation > 1.2f)
         {
-            warningLong.volume = 1;
+            warningsLong[0].volume = 1;
+            warningsLong[1].volume = 1;
 
-            if (warningShort.volume > 0)
-                warningShort.volume -= Time.fixedDeltaTime * 5;
+            if (warningsShort[0].volume > 0)
+                changeWarningsSound(warningsShort, -5);
         } else if (timeBeforeActivation > 0)
         {
-            warningShort.volume = 1;
+            warningsShort[0].volume = 1;
+            warningsShort[1].volume = 1;
 
-            if (warningLong.volume > 0)
-                warningLong.volume -= Time.fixedDeltaTime * 5;
-        } else
+            if (warningsLong[0].volume > 0)
+                changeWarningsSound(warningsLong, -5);
+        }
+        else
         {
-            if (warningShort.volume > 0)
-                warningShort.volume -= Time.fixedDeltaTime * 5;
-            if (warningLong.volume > 0)
-                warningLong.volume -= Time.fixedDeltaTime * 5;
+            if (warningsShort[0].volume > 0)
+                changeWarningsSound(warningsShort, -5);
+            if (warningsLong[0].volume > 0)
+                changeWarningsSound(warningsLong, -5);
 
             if (!wasActive)
             {
@@ -50,6 +62,14 @@ public class Connector : MonoBehaviour
 
         if (timeBeforeActivation > 0)
             timeBeforeActivation -= Time.fixedDeltaTime;
+    }
+
+    private void changeWarningsSound(AudioSource[] warnings, float modifier)
+    {
+        foreach (AudioSource warning in warnings)
+        {
+            warning.volume += Time.fixedDeltaTime * modifier;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

@@ -36,6 +36,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "DisplayStatusUI",
+                    "type": "Button",
+                    "id": "35123f9c-ba40-4105-9812-250ee011455e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -192,6 +200,17 @@
                     "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "b3855ca5-e897-455a-8ff2-f8a696bfbb9d",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "DisplayStatusUI",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

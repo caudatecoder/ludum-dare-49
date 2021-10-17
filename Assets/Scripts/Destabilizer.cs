@@ -8,8 +8,10 @@ public class Destabilizer : MonoBehaviour
 {
     public Light2D globalLight;
     public AudioSource alarmSound;
+
     public Text systemFailureTimer;
-    public Text dialogBox;
+    public DialogCanvas dialogCanvas;
+
     public float systemFailureMinutes = 2;
     public PlayerLife player;
 
@@ -48,13 +50,9 @@ public class Destabilizer : MonoBehaviour
         player.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
         backgroundMusicBefore.Stop();
 
-        dialogBox.text = "[SYSTEM FAILURE] [MAIN_REACTOR_DESTRUCION_IMMINENT]";
+        dialogCanvas.ShowNewDialog("[SYSTEM FAILURE] [MAIN_REACTOR_DESTRUCION_IMMINENT]\nUnstable energy level. Some systems might be inoperative");
 
-        yield return new WaitForSeconds(2);
-
-        dialogBox.text = "Unstable energy level. Some systems might be inoperative";
-
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(4);
 
         isDone = true;
         endTime = DateTime.Now.AddMinutes(systemFailureMinutes);

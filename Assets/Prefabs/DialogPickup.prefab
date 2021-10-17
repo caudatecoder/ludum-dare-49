@@ -172,8 +172,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a91eed82fd4d3dd45afe5f2fb8f256cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: Great job!
-  textUI: {fileID: 0}
+  text: Welcome, Operator!  All systems online. Use [A] [D] to move the robot and
+    [W] [S] to look
+  dialogCanvas: {fileID: 0}
   notificationSound: {fileID: 8629307928545731681}
 --- !u!61 &3658892222532304263
 BoxCollider2D:

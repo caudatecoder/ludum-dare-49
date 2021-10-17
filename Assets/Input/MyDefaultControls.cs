@@ -49,6 +49,14 @@ public class @MyDefaultControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""DisplayStatusUI"",
+                    ""type"": ""Button"",
+                    ""id"": ""35123f9c-ba40-4105-9812-250ee011455e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -205,6 +213,17 @@ public class @MyDefaultControls : IInputActionCollection, IDisposable
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b3855ca5-e897-455a-8ff2-f8a696bfbb9d"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""DisplayStatusUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -245,6 +264,7 @@ public class @MyDefaultControls : IInputActionCollection, IDisposable
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_Remote = m_Player.FindAction("Remote", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
+        m_Player_DisplayStatusUI = m_Player.FindAction("DisplayStatusUI", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -298,6 +318,7 @@ public class @MyDefaultControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_Remote;
     private readonly InputAction m_Player_Look;
+    private readonly InputAction m_Player_DisplayStatusUI;
     public struct PlayerActions
     {
         private @MyDefaultControls m_Wrapper;
@@ -306,6 +327,7 @@ public class @MyDefaultControls : IInputActionCollection, IDisposable
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @Remote => m_Wrapper.m_Player_Remote;
         public InputAction @Look => m_Wrapper.m_Player_Look;
+        public InputAction @DisplayStatusUI => m_Wrapper.m_Player_DisplayStatusUI;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -327,6 +349,9 @@ public class @MyDefaultControls : IInputActionCollection, IDisposable
                 @Look.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
                 @Look.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
                 @Look.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
+                @DisplayStatusUI.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDisplayStatusUI;
+                @DisplayStatusUI.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDisplayStatusUI;
+                @DisplayStatusUI.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDisplayStatusUI;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -343,6 +368,9 @@ public class @MyDefaultControls : IInputActionCollection, IDisposable
                 @Look.started += instance.OnLook;
                 @Look.performed += instance.OnLook;
                 @Look.canceled += instance.OnLook;
+                @DisplayStatusUI.started += instance.OnDisplayStatusUI;
+                @DisplayStatusUI.performed += instance.OnDisplayStatusUI;
+                @DisplayStatusUI.canceled += instance.OnDisplayStatusUI;
             }
         }
     }
@@ -371,5 +399,6 @@ public class @MyDefaultControls : IInputActionCollection, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnRemote(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
+        void OnDisplayStatusUI(InputAction.CallbackContext context);
     }
 }

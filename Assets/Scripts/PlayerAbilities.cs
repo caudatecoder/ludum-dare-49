@@ -2,17 +2,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.Audio;
-using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class PlayerAbilities : MonoBehaviour
 {
     public bool chargerEnabled = true;
     public bool micEnabled = true;
     public bool remoteEnabled = true;
-
-    public CanvasGroup chargerUI;
-    public CanvasGroup remoteUI;
-    public CanvasGroup micUI;
 
     public float destabilizationInterval = 30f;
 
@@ -21,13 +17,73 @@ public class PlayerAbilities : MonoBehaviour
     public Light2D electricLight;
     public AudioSource remoteSound;
     public AudioSource destabilizedSound;
-    public Text dialogBox;
 
     public AudioMixer micMixer;
     public AudioMixer systemMixer;
 
+    [System.Serializable]
+    public class BoolEvent : UnityEvent<bool> { }
+
+    [Header("Events")]
+    [Space]
+    public BoolEvent ChargerStatusEvent;
+    public BoolEvent RemoteStatusEvent;
+    public BoolEvent MicStatusEvent;
+
     private MyDefaultControls Controls;
     private bool expandElectricLight = false;
+
+    void Awake()
+    {
+        if (ChargerStatusEvent == null)
+            ChargerStatusEvent = new BoolEvent();
+
+        if (RemoteStatusEvent == null)
+            RemoteStatusEvent = new BoolEvent(); 
+        
+        if (MicStatusEvent == null)
+            MicStatusEvent = new BoolEvent();
+
+        Controls = new MyDefaultControls();
+        Controls.Player.Use.started += _ => Use();
+        Controls.Player.Remote.performed += _ => RemoteActivate();
+    }
+
+    void FixedUpdate()
+    {
+        UpdateMicMixer();
+        UpdateElectricLight();
+    }
+    private void UpdateMicMixer()
+    {
+        micMixer.GetFloat("volume", out float micMixerVolume);
+
+        if (micEnabled && micMixerVolume < 0f)
+        {
+            micMixer.SetFloat("volume", micMixerVolume + Time.fixedDeltaTime * 20);
+        }
+        else if (!micEnabled && micMixerVolume > -80f)
+        {
+            float adjustAmount = micMixerVolume - Time.fixedDeltaTime * 20;
+            if (adjustAmount < -80f)
+            {
+                adjustAmount = -80f;
+            }
+            micMixer.SetFloat("volume", adjustAmount);
+        }
+    }
+
+    private void UpdateElectricLight()
+    {
+        if (expandElectricLight)
+        {
+            electricLight.intensity += Time.fixedDeltaTime * 10;
+        }
+        else if (electricLight.intensity > 0)
+        {
+            electricLight.intensity -= Time.fixedDeltaTime * 10;
+        }
+    }
 
     public void SetInteractable(GameObject interactable)
     {
@@ -42,7 +98,7 @@ public class PlayerAbilities : MonoBehaviour
     public void Destabilize()
     {
         destabilizedSound.Play();
-        Invoke("Destabilize", destabilizationInterval);
+        Invoke("Destabilize", destabilizationInterval); // TODO rework
 
         if (chargerEnabled && micEnabled && remoteEnabled)
         {
@@ -75,79 +131,39 @@ public class PlayerAbilities : MonoBehaviour
     void DisableMic()
     {
         chargerEnabled = true;
-        chargerUI.alpha = 1;
+        ChargerStatusEvent.Invoke(true);
         remoteEnabled = true;
-        remoteUI.alpha = 1;
+        RemoteStatusEvent.Invoke(true);
 
-        micUI.alpha = 0.1f;
         micEnabled = false;
-
+        MicStatusEvent.Invoke(false);
         systemMixer.SetFloat("distortion", .3f);
 
-        dialogBox.text = "Not enough energy. Microphone disabled. Attempting rebalance...";
     }
 
     void DisableCharger()
     {
         remoteEnabled = true;
-        remoteUI.alpha = 1;
-        micUI.alpha = 1f;
+        RemoteStatusEvent.Invoke(true);
         micEnabled = true;
+        MicStatusEvent.Invoke(true);
 
         chargerEnabled = false;
-        chargerUI.alpha = 0.1f;
+        ChargerStatusEvent.Invoke(false);
+
         systemMixer.SetFloat("distortion", 0f);
-
-        dialogBox.text = "Not enough energy. Charger disabled. Attempting rebalance...";
-
     }
 
     void DisableRemote()
     {
-        micUI.alpha = 1f;
         micEnabled = true;
+        MicStatusEvent.Invoke(true);
         chargerEnabled = true;
-        chargerUI.alpha = 1f;
+        ChargerStatusEvent.Invoke(true);
 
         remoteEnabled = false;
-        remoteUI.alpha = 0.1f;
+        RemoteStatusEvent.Invoke(false);
         systemMixer.SetFloat("distortion", 0f);
-
-        dialogBox.text = "Not enough energy. Remote controller disabled. Attempting rebalance...";
-    }
-
-    void Awake()
-    {
-        Controls = new MyDefaultControls();
-        Controls.Player.Use.started += _ => Use();
-        Controls.Player.Remote.performed += _ => RemoteActivate();
-    }
-
-    void FixedUpdate()
-    {
-        micMixer.GetFloat("volume", out float micMixerVolume);
-
-        if (micEnabled && micMixerVolume < 0f)
-        {
-            micMixer.SetFloat("volume", micMixerVolume + Time.fixedDeltaTime * 20);
-        } else if (!micEnabled && micMixerVolume > -80f)
-        {
-            float adjustAmount = micMixerVolume - Time.fixedDeltaTime * 20;
-            if (adjustAmount < -80f)
-            {
-                adjustAmount = -80f;
-            }
-            micMixer.SetFloat("volume", adjustAmount);
-        }
-
-        if (expandElectricLight)
-        {
-            electricLight.intensity += Time.fixedDeltaTime * 10;
-        }
-        else if (electricLight.intensity > 0)
-        {
-            electricLight.intensity -= Time.fixedDeltaTime * 10;
-        }
     }
 
     void Use()

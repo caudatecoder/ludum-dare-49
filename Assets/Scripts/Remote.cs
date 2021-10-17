@@ -5,8 +5,20 @@ public class Remote : MonoBehaviour
 {
     public GameObject target;
     public Light2D indicatorLight;
+    public Canvas uiCanvas;
 
     private int blinkCount = 0;
+    private GameObject player;
+    private bool playerIsNear = false;
+    private bool remoteEnabled = true;
+
+    private void Start()
+    {
+
+        player = GameObject.FindWithTag("Player");
+        remoteEnabled = player.GetComponent<PlayerAbilities>().remoteEnabled;
+        player.GetComponent<PlayerAbilities>().RemoteStatusEvent.AddListener(SetRemoteStatus);
+    }
 
     public void Activate()
     {
@@ -18,7 +30,10 @@ public class Remote : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<PlayerAbilities>().SetRemote(this);
+            player.GetComponent<PlayerAbilities>().SetRemote(this);
+
+            playerIsNear = true;
+            UpdateUI();
         }
     }
 
@@ -26,8 +41,22 @@ public class Remote : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<PlayerAbilities>().SetRemote(null);
+            player.GetComponent<PlayerAbilities>().SetRemote(null);
+
+            playerIsNear = false;
+            UpdateUI();
         }
+    }
+
+    private void UpdateUI()
+    {
+        uiCanvas.enabled = remoteEnabled && playerIsNear;
+    }
+
+    private void SetRemoteStatus(bool enabled)
+    {
+        remoteEnabled = enabled;
+        UpdateUI();
     }
 
     private void BlinkIndicatorOn()
